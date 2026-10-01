@@ -1,0 +1,32 @@
+rules:
+  - id: telephone-dans-le-module-public
+    message: >-
+      Le module public ne doit ni lire ni renvoyer le téléphone (donnée interne).
+      Pas de SELECT * non plus : on liste les colonnes publiques.
+    severity: ERROR
+    languages: [python]
+    paths:
+      include: [app/public.py]
+    pattern-regex: (?i)(telephone|select\s+\*)
+
+  - id: route-sans-utilisateur-courant
+    message: >-
+      Toute route hors de /public doit dépendre de utilisateur_courant,
+      sinon elle est accessible sans contrôle d'accès.
+    severity: ERROR
+    languages: [python]
+    paths:
+      include: [app/]
+      exclude: [app/public.py]
+    patterns:
+      - pattern: |
+          @$ROUTEUR.$METHODE(...)
+          def $ROUTE(...):
+            ...
+      - metavariable-regex:
+          metavariable: $METHODE
+          regex: ^(get|post|put|patch|delete)$
+      - pattern-not: |
+          @$ROUTEUR.$METHODE(...)
+          def $ROUTE(..., $U: Annotated[$T, Depends(utilisateur_courant)], ...):
+            ...

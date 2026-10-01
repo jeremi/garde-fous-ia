@@ -1,0 +1,26 @@
+name: Mutation
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - app/regles.py
+      - tests/**
+
+permissions:
+  contents: read
+
+jobs:
+  mutmut:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.2.0
+      - run: uv run mutmut run
+      - name: Échouer si un mutant de app/regles.py survit
+        run: |
+          uv run mutmut results --all true
+          if uv run mutmut results | grep -q .; then
+            echo "Des mutants ont survécu : une règle peut être cassée sans qu'un test échoue."
+            exit 1
+          fi

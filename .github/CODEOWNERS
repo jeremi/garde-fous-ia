@@ -1,0 +1,9 @@
+# Qui voit quoi, et les garde-fous eux-mêmes : revue obligatoire d'un code owner.
+/app/regles.py      @jeremi
+/app/public.py      @jeremi
+/app/db.py          @jeremi
+/docs/regles.md     @jeremi
+/.semgrep/          @jeremi
+/.github/           @jeremi
+/.claude/           @jeremi
+/AGENTS.md          @jeremi

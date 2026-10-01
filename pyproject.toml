@@ -1,0 +1,36 @@
+[project]
+name = "garde-fous-ia"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.142.2",
+    "uvicorn>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx2>=2.13.1",
+    "mutmut>=3.8.0",
+    "pytest>=9.1.1",
+    "ruff>=0.16.9",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+# E/F : erreurs de base, I : imports triés, B : bugs probables,
+# S : sécurité (flake8-bandit), T20 : pas de print() oublié.
+select = ["E", "F", "I", "B", "S", "T20"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]  # assert est normal dans les tests
+"scripts/*" = ["T201"]  # les scripts écrivent pour un humain
+
+[tool.mutmut]
+source_paths = ["app/"]
+only_mutate = ["app/regles.py"]
