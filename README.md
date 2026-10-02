@@ -14,14 +14,20 @@ Corvala. Toutes les données sont inventées.
 uv sync
 uv run pytest -q
 uv run ruff check .
-uvx semgrep scan --config .semgrep/regles.yml --error --metrics=off
+uvx semgrep@1.178.0 scan --config .semgrep/regles.yml --error --metrics=off
 uv run python scripts/verifier_regles.py
-uv run mutmut run && uv run mutmut results     # aucune ligne affichée = aucun mutant survivant
+uv run mutmut run && uv run mutmut results
 osv-scanner scan source --lockfile uv.lock
 gitleaks git .
 pre-commit install && pre-commit run --all-files
-uv run uvicorn app.main:app --reload           # API sur http://127.0.0.1:8000/docs
+uv run uvicorn app.main:app --reload
 ```
+
+- Semgrep est épinglé à la même version que la CI et pre-commit.
+- `mutmut results` n'affiche rien quand aucun mutant ne survit.
+- Si Git utilise un dossier de hooks global (`core.hooksPath`), `pre-commit install` refuse
+  de s'installer : lancez seulement `pre-commit run --all-files`.
+- L'API est servie sur http://127.0.0.1:8000/docs.
 
 **Authentification de démonstration uniquement.** L'utilisateur est choisi par l'en-tête
 `X-Utilisateur` (`agent-anvela`, `agent-corvala`, `siege`). Ce n'est pas une authentification :
