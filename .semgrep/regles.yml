@@ -6,7 +6,7 @@ rules:
     severity: ERROR
     languages: [python]
     paths:
-      include: [app/public.py]
+      include: [/app/public.py]
     pattern-regex: (?i)(telephone|select\s+\*)
 
   - id: route-sans-utilisateur-courant
@@ -16,8 +16,8 @@ rules:
     severity: ERROR
     languages: [python]
     paths:
-      include: [app/]
-      exclude: [app/public.py]
+      include: [/app/]
+      exclude: [/app/public.py]
     patterns:
       - pattern: |
           @$ROUTEUR.$METHODE(...)
