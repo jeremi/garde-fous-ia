@@ -19,14 +19,15 @@ uv run python scripts/verifier_regles.py
 uv run mutmut run && uv run mutmut results
 osv-scanner scan source --lockfile uv.lock
 gitleaks git .
-pre-commit install && pre-commit run --all-files
+pre-commit install
+pre-commit run --all-files
 uv run uvicorn app.main:app --reload
 ```
 
 - Semgrep est épinglé à la même version que la CI et pre-commit.
 - `mutmut results` n'affiche rien quand aucun mutant ne survit.
 - Si Git utilise un dossier de hooks global (`core.hooksPath`), `pre-commit install` refuse
-  de s'installer : lancez seulement `pre-commit run --all-files`.
+  de s'installer ; `pre-commit run --all-files` lance quand même les contrôles.
 - L'API est servie sur http://127.0.0.1:8000/docs.
 
 **Authentification de démonstration uniquement.** L'utilisateur est choisi par l'en-tête
